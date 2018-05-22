@@ -1,4 +1,4 @@
-[submodule "OptionsFramework"]
+[submodule "Parkify/OptionsFramework"]
 	path = Parkify/OptionsFramework
 	url = git@github.com:bloodypenguin/OptionsFramework.git
 	branch = customization/Skylines-Parkify
