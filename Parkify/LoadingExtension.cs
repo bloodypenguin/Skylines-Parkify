@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using ICities;
+using Parkify.OptionsFramework;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -63,7 +64,7 @@ namespace Parkify
                 {
                     continue;
                 }
-                if (prefabInfo.m_buildingAI is MonumentAI) //TODO(earalov): feature flag this and others
+                if (OptionsWrapper<Options>.Options.PatchVanillaUniqueBuildings && prefabInfo.m_buildingAI is MonumentAI)
                 {
                     if (!monumentWhitelist.Contains(prefabInfo.name))
                     {
@@ -73,8 +74,14 @@ namespace Parkify
                 var parkType = GetParkType(prefabInfo.name);
                 ToParkBuildingInfo(prefabInfo, parkType);
             }
-            PatchMarina();
-            PatchFishingTours();
+            if (OptionsWrapper<Options>.Options.PatchMarina)
+            {
+                PatchMarina();
+            }
+            if (OptionsWrapper<Options>.Options.PatchFishingTours)
+            {
+                PatchFishingTours();
+            }
             initialized = true;
         }
 
