@@ -13,7 +13,7 @@ namespace Parkify
     {
         private static bool initialized;
 
-        private static  List<string> monumentWhitelist = new List<string>
+        private static List<string> monumentWhitelist = new List<string>
         {
             "Official Park",
             "Fancy Fountain",
@@ -57,31 +57,40 @@ namespace Parkify
             {
                 return;
             }
+
             for (uint i = 0; i < PrefabCollection<BuildingInfo>.LoadedCount(); i++)
             {
                 var prefabInfo = PrefabCollection<BuildingInfo>.GetLoaded(i);
-                if (!(prefabInfo.m_buildingAI is ParkAI || prefabInfo.m_buildingAI is MonumentAI) || prefabInfo.name == null)
+                if (!(prefabInfo.m_buildingAI?.GetType() == typeof(ParkAI) || prefabInfo.m_buildingAI is MonumentAI) ||
+                    prefabInfo.name == null)
                 {
                     continue;
                 }
-                if (OptionsWrapper<Options>.Options.PatchVanillaUniqueBuildings && prefabInfo.m_buildingAI is MonumentAI)
+
+                if (prefabInfo.m_buildingAI is MonumentAI)
                 {
-                    if (!monumentWhitelist.Contains(prefabInfo.name))
+                    if (!OptionsWrapper<Options>.Options.PatchVanillaUniqueBuildings ||
+                        !monumentWhitelist.Contains(prefabInfo.name))
                     {
                         continue;
                     }
                 }
+
+
                 var parkType = GetParkType(prefabInfo.name);
                 ToParkBuildingInfo(prefabInfo, parkType);
             }
+
             if (OptionsWrapper<Options>.Options.PatchMarina)
             {
                 PatchMarina();
             }
+
             if (OptionsWrapper<Options>.Options.PatchFishingTours)
             {
                 PatchFishingTours();
             }
+
             initialized = true;
         }
 
@@ -90,23 +99,24 @@ namespace Parkify
             //TODO(earalov): load type for workshop assets
             switch (prefabInfoName)
             {
-                    case "Zoo": //TODO(earalov): make possible to use as zoo main gate
-                    case "Panda Sanctuary": //TODO(earalov): make possible to use as zoo main gate
-                        return DistrictPark.ParkType.Zoo;
-                    case "bouncer_castle":
-                    case "MerryGoRound":
-                    case "MagickaPark":
-                    case "Traffic Park":
-                    case "Sphinx Of Scenarios":
-                        return DistrictPark.ParkType.AmusementPark;
-                    case "9x15_RidingStable":
-                    case "Lungs of the City":
-                    case "Bird and Bee Haven":
-                    case "Public Firepit":
-                    case "Igloo Hotel":
-                    case "Sleigh Ride":
-                        return DistrictPark.ParkType.NatureReserve;
+                case "Zoo": //TODO(earalov): make possible to use as zoo main gate
+                case "Panda Sanctuary": //TODO(earalov): make possible to use as zoo main gate
+                    return DistrictPark.ParkType.Zoo;
+                case "bouncer_castle":
+                case "MerryGoRound":
+                case "MagickaPark":
+                case "Traffic Park":
+                case "Sphinx Of Scenarios":
+                    return DistrictPark.ParkType.AmusementPark;
+                case "9x15_RidingStable":
+                case "Lungs of the City":
+                case "Bird and Bee Haven":
+                case "Public Firepit":
+                case "Igloo Hotel":
+                case "Sleigh Ride":
+                    return DistrictPark.ParkType.NatureReserve;
             }
+
             return DistrictPark.ParkType.Generic;
         }
 
@@ -117,10 +127,12 @@ namespace Parkify
             {
                 return;
             }
+
             if (prefabInfo.m_placementMode == BuildingInfo.PlacementMode.Roadside)
             {
                 prefabInfo.m_placementMode = BuildingInfo.PlacementMode.PathsideOrGround;
             }
+
             newAI.m_parkType = parkType;
         }
 
@@ -131,6 +143,7 @@ namespace Parkify
             {
                 return;
             }
+
             newAI.m_allowOverlap = allowOverlap;
         }
 
@@ -146,12 +159,14 @@ namespace Parkify
             {
                 return;
             }
+
             var list = buildingInfo.m_props.ToList();
             var propInfo = PrefabCollection<PropInfo>.FindLoaded("Yacht");
             if (propInfo == null)
             {
                 return;
             }
+
             var prop = new BuildingInfo.Prop
             {
                 m_angle = 270,
@@ -175,11 +190,13 @@ namespace Parkify
             {
                 return;
             }
+
             var propInfo = PrefabCollection<PropInfo>.FindLoaded("houseboat");
             if (propInfo == null)
             {
                 return;
             }
+
             buildingInfo.m_props[15].m_prop = propInfo;
             buildingInfo.m_props[15].m_finalProp = propInfo;
             buildingInfo.m_props[15].m_position = new Vector3(-13, 0, 3.5f);
@@ -194,6 +211,7 @@ namespace Parkify
             {
                 return null;
             }
+
             Object.Destroy(oldAI);
             var newAI = prefabInfo.gameObject.AddComponent<T>();
             CopyAttributes(oldAI, newAI);
