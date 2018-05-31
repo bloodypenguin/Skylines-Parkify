@@ -53,6 +53,10 @@ namespace Parkify
         public override void OnLevelLoaded(LoadMode mode)
         {
             base.OnLevelLoaded(mode);
+            if (mode == LoadMode.LoadAsset || mode == LoadMode.NewAsset)
+            {
+                return;
+            }
             if (initialized)
             {
                 return;
