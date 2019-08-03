@@ -64,29 +64,38 @@ namespace Parkify
 
             for (uint i = 0; i < PrefabCollection<BuildingInfo>.LoadedCount(); i++)
             {
-                var prefabInfo = PrefabCollection<BuildingInfo>.GetLoaded(i);
-                if (prefabInfo == null || prefabInfo.name == null)
+                try
                 {
-                    continue;
-                }
-                if (!(prefabInfo.m_buildingAI?.GetType() == typeof(ParkAI) || prefabInfo.m_buildingAI is MonumentAI) ||
-                    prefabInfo.name == null)
-                {
-                    continue;
-                }
-
-                if (prefabInfo.m_buildingAI is MonumentAI)
-                {
-                    if (!OptionsWrapper<Options>.Options.PatchVanillaUniqueBuildings ||
-                        !monumentWhitelist.Contains(prefabInfo.name))
+                    var prefabInfo = PrefabCollection<BuildingInfo>.GetLoaded(i);
+                    if (prefabInfo == null || prefabInfo.name == null)
                     {
                         continue;
                     }
+
+                    if (!(prefabInfo.m_buildingAI?.GetType() == typeof(ParkAI) ||
+                          prefabInfo.m_buildingAI is MonumentAI) ||
+                        prefabInfo.name == null)
+                    {
+                        continue;
+                    }
+
+                    if (prefabInfo.m_buildingAI is MonumentAI)
+                    {
+                        if (!OptionsWrapper<Options>.Options.PatchVanillaUniqueBuildings ||
+                            !monumentWhitelist.Contains(prefabInfo.name))
+                        {
+                            continue;
+                        }
+                    }
+
+
+                    var parkType = GetParkType(prefabInfo.name);
+                    ToParkBuildingInfo(prefabInfo, parkType);
                 }
-
-
-                var parkType = GetParkType(prefabInfo.name);
-                ToParkBuildingInfo(prefabInfo, parkType);
+                catch (Exception e)
+                {
+                    UnityEngine.Debug.LogException(e);
+                }
             }
 
             if (OptionsWrapper<Options>.Options.PatchMarina)
