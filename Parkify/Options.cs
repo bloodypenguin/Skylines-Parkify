@@ -12,6 +12,7 @@ namespace Parkify
             PatchVanillaUniqueBuildings = false;
             PatchFishingTours = true;
             PatchMarina = true;
+            PatchBeachVolley = true;
         }
 
         [XmlElement("patch")]
@@ -25,6 +26,10 @@ namespace Parkify
         [XmlElement("patchMarina")]
         [Checkbox("Add missing boat to marina asset", "Vanilla assets fixes")]
         public bool PatchMarina { set; get; }
+        
+        [XmlElement("patchBeachvolley")]
+        [Checkbox("Remove parking lots and concrete", "Vanilla assets fixes")]
+        public bool PatchBeachVolley { set; get; }
 
     }
 }
