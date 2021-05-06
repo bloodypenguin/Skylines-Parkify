@@ -3,7 +3,7 @@ using Parkify.OptionsFramework.Attibutes;
 
 namespace Parkify
 {
-    [Options("CubemapReplacer")]
+    [Options("Parkify")]
     public class Options
     {
 
