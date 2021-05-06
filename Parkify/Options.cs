@@ -28,7 +28,7 @@ namespace Parkify
         public bool PatchMarina { set; get; }
         
         [XmlElement("patchBeachvolley")]
-        [Checkbox("Remove parking lots, concrete and annoying props", "Vanilla assets fixes")]
+        [Checkbox("Remove parking lots, concrete and annoying props from Beach Volleyball asset", "Vanilla assets fixes")]
         public bool PatchBeachVolley { set; get; }
 
     }
