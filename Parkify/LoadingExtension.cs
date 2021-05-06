@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using ICities;
+using Parkify.HarmonyPatches.BuildingInfoPatch;
 using Parkify.OptionsFramework;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -44,9 +45,16 @@ namespace Parkify
 
         //TODO(earalov): add option to remove concrete and parking slots
 
+        public override void OnCreated(ILoading loading)
+        {
+            base.OnCreated(loading);
+            InitializePrefabPatch.Apply();
+        }
+
         public override void OnReleased()
         {
             base.OnReleased();
+            InitializePrefabPatch.Undo();
             initialized = false;
         }
 
@@ -111,11 +119,6 @@ namespace Parkify
             if (OptionsWrapper<Options>.Options.PatchFishingTours)
             {
                 PatchFishingTours();
-            }
-            
-            if (OptionsWrapper<Options>.Options.PatchBeachVolley)
-            {
-                PatchBeachvolleyCourt();
             }
 
             initialized = true;
@@ -231,46 +234,7 @@ namespace Parkify
             buildingInfo.m_props[15].m_angle = 90;
         }
         
-        private static void PatchBeachvolleyCourt()
-        {
-            var buildingInfo = PrefabCollection<BuildingInfo>.FindLoaded("Beachvolley Court");
-            if (buildingInfo?.m_props == null)
-            {
-                return;
-            }
 
-            buildingInfo.m_cellSurfaces = new TerrainModify.Surface[]
-            {
-                TerrainModify.Surface.None,
-                TerrainModify.Surface.None,
-                TerrainModify.Surface.None,
-                TerrainModify.Surface.None,
-                TerrainModify.Surface.None,
-                TerrainModify.Surface.None,
-                TerrainModify.Surface.None,
-                TerrainModify.Surface.None,
-                TerrainModify.Surface.None,
-                TerrainModify.Surface.None,
-                TerrainModify.Surface.None,
-                TerrainModify.Surface.None,
-                TerrainModify.Surface.None,
-                TerrainModify.Surface.None,
-                TerrainModify.Surface.None,
-                TerrainModify.Surface.None,
-            };
-
-            var list = buildingInfo.m_props.ToList();
-            buildingInfo.m_props = list
-                .Where(p =>
-                    !p.m_prop.name.Contains("Parking Spaces") && 
-                    !p.m_prop.name.Contains("StreetLamp") &&
-                    !p.m_prop.name.Contains("Billboard") &&
-                    !p.m_prop.name.Contains("kiosk") &&
-                    !p.m_prop.name.Contains("beergarden"))
-                .ToArray();
-            buildingInfo.m_hasParkingSpaces = VehicleInfo.VehicleType.None;
-            buildingInfo.m_weakTerrainRuining = true;
-        }
 
         private T ReplaceAI<T>(BuildingInfo prefabInfo) where T : BuildingAI
         {
