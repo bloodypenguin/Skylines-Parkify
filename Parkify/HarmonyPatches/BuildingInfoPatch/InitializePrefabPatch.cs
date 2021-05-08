@@ -42,13 +42,43 @@ namespace Parkify.HarmonyPatches.BuildingInfoPatch
 
         private static void PostInitializePrefab(BuildingInfo __instance)
         {
+            if (__instance?.name == "Panda Sanctuary")
+            {
+                PatchMonument(__instance, TerrainModify.Surface.Gravel);
+                return;
+            }
+            if (__instance?.name == "Zoo")
+            {
+                PatchMonument(__instance, TerrainModify.Surface.None);
+                return;
+            }
             if (__instance?.name != "Beachvolley Court" || __instance.m_props == null)
             {
                 return;   
             }
             PatchBeachvolleyCourt(__instance);
         }
-        
+
+        private static void PatchMonument(BuildingInfo buildingInfo, TerrainModify.Surface pavementReplacement)
+        {
+            buildingInfo.m_cellSurfaces = buildingInfo.m_cellSurfaces.Select(surface =>
+            {
+                if (surface == TerrainModify.Surface.PavementB)
+                {
+                    return pavementReplacement;
+                }
+
+                return surface;
+            }).ToArray();
+            if (buildingInfo.m_props != null)
+            {
+                buildingInfo.m_props = buildingInfo.m_props
+                    .Where(p => p?.m_prop?.name == null || !p.m_prop.name.Contains("Parking Spaces"))
+                    .ToArray();
+            }
+            buildingInfo.m_hasParkingSpaces &= ~VehicleInfo.VehicleType.Car;
+        }
+
         private static void PatchBeachvolleyCourt(BuildingInfo buildingInfo)
         {
             buildingInfo.m_cellSurfaces = new TerrainModify.Surface[]

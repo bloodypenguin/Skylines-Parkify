@@ -92,13 +92,9 @@ namespace Parkify
                         continue;
                     }
 
-                    if (prefabInfo.m_buildingAI is MonumentAI)
+                    if (!ShouldPatchMonument(prefabInfo))
                     {
-                        if (!OptionsWrapper<Options>.Options.PatchVanillaUniqueBuildings ||
-                            !monumentWhitelist.Contains(prefabInfo.name))
-                        {
-                            continue;
-                        }
+                        continue;
                     }
 
 
@@ -122,6 +118,15 @@ namespace Parkify
             }
 
             initialized = true;
+        }
+
+        public static bool ShouldPatchMonument(BuildingInfo prefabInfo)
+        {
+            if (!OptionsWrapper<Options>.Options.PatchVanillaUniqueBuildings)
+            {
+                return false;
+            }
+            return prefabInfo.m_buildingAI is MonumentAI && monumentWhitelist.Contains(prefabInfo.name);
         }
 
         private DistrictPark.ParkType GetParkType(string prefabInfoName)
