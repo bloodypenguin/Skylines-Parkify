@@ -92,7 +92,7 @@ namespace Parkify
                         continue;
                     }
 
-                    if (!ShouldPatchMonument(prefabInfo))
+                    if (prefabInfo.m_buildingAI is MonumentAI && !ShouldPatchMonument(prefabInfo))
                     {
                         continue;
                     }
