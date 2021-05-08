@@ -134,8 +134,8 @@ namespace Parkify
             //TODO(earalov): load type for workshop assets
             switch (prefabInfoName)
             {
-                case "Zoo": //TODO(earalov): make possible to use as zoo main gate
-                case "Panda Sanctuary": //TODO(earalov): make possible to use as zoo main gate
+                case "Zoo":
+                case "Panda Sanctuary":
                     return DistrictPark.ParkType.Zoo;
                 case "bouncer_castle":
                 case "MerryGoRound":

@@ -42,21 +42,32 @@ namespace Parkify.HarmonyPatches.BuildingInfoPatch
 
         private static void PostInitializePrefab(BuildingInfo __instance)
         {
-            if (__instance?.name == "Panda Sanctuary")
+            try
             {
-                PatchMonument(__instance, TerrainModify.Surface.Gravel);
-                return;
+                if (__instance?.name == "Panda Sanctuary")
+                {
+                    PatchMonument(__instance, TerrainModify.Surface.Gravel);
+                    return;
+                }
+
+                if (__instance?.name == "Zoo")
+                {
+                    PatchMonument(__instance, TerrainModify.Surface.None);
+                    return;
+                }
+
+                if (__instance?.name != "Beachvolley Court" || __instance.m_props == null)
+                {
+                    return;
+                }
+
+                PatchBeachvolleyCourt(__instance);
             }
-            if (__instance?.name == "Zoo")
+            catch (Exception e)
             {
-                PatchMonument(__instance, TerrainModify.Surface.None);
-                return;
+                UnityEngine.Debug.LogError($"Parkify - failed to execute post initialize for {__instance?.name}");
+                UnityEngine.Debug.LogException(e);
             }
-            if (__instance?.name != "Beachvolley Court" || __instance.m_props == null)
-            {
-                return;   
-            }
-            PatchBeachvolleyCourt(__instance);
         }
 
         private static void PatchMonument(BuildingInfo buildingInfo, TerrainModify.Surface pavementReplacement)
