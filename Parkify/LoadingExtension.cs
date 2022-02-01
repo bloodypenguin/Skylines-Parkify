@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using CitiesHarmony.API;
 using ICities;
 using Parkify.HarmonyPatches.BuildingInfoPatch;
 using Parkify.OptionsFramework;
@@ -48,12 +49,20 @@ namespace Parkify
         public override void OnCreated(ILoading loading)
         {
             base.OnCreated(loading);
+            if (!HarmonyHelper.IsHarmonyInstalled)
+            {
+                return;
+            }
             InitializePrefabPatch.Apply();
         }
 
         public override void OnReleased()
         {
             base.OnReleased();
+            if (!HarmonyHelper.IsHarmonyInstalled)
+            {
+                return;
+            }
             InitializePrefabPatch.Undo();
             initialized = false;
         }
@@ -66,6 +75,10 @@ namespace Parkify
                 return;
             }
             if (initialized)
+            {
+                return;
+            }
+            if (!HarmonyHelper.IsHarmonyInstalled)
             {
                 return;
             }

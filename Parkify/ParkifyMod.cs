@@ -1,4 +1,5 @@
-﻿using ICities;
+﻿using CitiesHarmony.API;
+using ICities;
 using Parkify.OptionsFramework.Extensions;
 
 namespace Parkify
@@ -11,6 +12,11 @@ namespace Parkify
         public void OnSettingsUI(UIHelperBase helper)
         {
             helper.AddOptionsGroup<Options>();
+        }
+        
+        public void OnEnabled()
+        {
+            HarmonyHelper.EnsureHarmonyInstalled();
         }
     }
 }
