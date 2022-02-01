@@ -97,7 +97,7 @@ public static class ToParkBuildingHelper
 
         var parkType = GetParkType(prefabInfo.name);
         ToParkBuildingInfo(prefabInfo, parkType);
-        UnityEngine.Debug.LogError($"Parkify - {prefabInfo?.name} was successfully parkified");
+        UnityEngine.Debug.Log($"Parkify - {prefabInfo?.name} was successfully parkified");
     }
 
 
