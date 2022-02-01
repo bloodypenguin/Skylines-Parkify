@@ -54,6 +54,7 @@
     <Compile Include="ParkifyMod.cs" />
     <Compile Include="PatchUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ToParkBuildingHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CitiesHarmony.API">

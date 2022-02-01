@@ -1,8 +1,5 @@
 using System;
 using System.Linq;
-using Parkify.OptionsFramework;
-using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Parkify.HarmonyPatches.BuildingInfoPatch
 {
@@ -44,15 +41,16 @@ namespace Parkify.HarmonyPatches.BuildingInfoPatch
         {
             try
             {
+                ToParkBuildingHelper.ParkifyIfNeeded(__instance);
                 if (__instance?.name == "Panda Sanctuary")
                 {
-                    PatchMonument(__instance, TerrainModify.Surface.Gravel);
+                    PatchMonumentSurfaceAndProps(__instance, TerrainModify.Surface.Gravel);
                     return;
                 }
 
                 if (__instance?.name == "Zoo")
                 {
-                    PatchMonument(__instance, TerrainModify.Surface.None);
+                    PatchMonumentSurfaceAndProps(__instance, TerrainModify.Surface.None);
                     return;
                 }
 
@@ -61,7 +59,7 @@ namespace Parkify.HarmonyPatches.BuildingInfoPatch
                     return;
                 }
 
-                PatchBeachvolleyCourt(__instance);
+                PatchBeachvolleyCourtSurfaceAndProps(__instance);
             }
             catch (Exception e)
             {
@@ -70,7 +68,7 @@ namespace Parkify.HarmonyPatches.BuildingInfoPatch
             }
         }
 
-        private static void PatchMonument(BuildingInfo buildingInfo, TerrainModify.Surface pavementReplacement)
+        private static void PatchMonumentSurfaceAndProps(BuildingInfo buildingInfo, TerrainModify.Surface pavementReplacement)
         {
             buildingInfo.m_cellSurfaces = buildingInfo.m_cellSurfaces.Select(surface =>
             {
@@ -90,7 +88,7 @@ namespace Parkify.HarmonyPatches.BuildingInfoPatch
             buildingInfo.m_hasParkingSpaces &= ~VehicleInfo.VehicleType.Car;
         }
 
-        private static void PatchBeachvolleyCourt(BuildingInfo buildingInfo)
+        private static void PatchBeachvolleyCourtSurfaceAndProps(BuildingInfo buildingInfo)
         {
             buildingInfo.m_cellSurfaces = new TerrainModify.Surface[]
             {
