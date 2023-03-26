@@ -77,7 +77,7 @@ namespace Parkify.HarmonyPatches.BuildingInfoPatch
             {
                 return;
             }
-            UnityEngine.Debug.LogError($"Parkify - updated placement mode for park building {prefabInfo?.name}");
+            UnityEngine.Debug.Log($"Parkify - updated placement mode for park building {prefabInfo?.name}");
             prefabInfo.m_placementMode = BuildingInfo.PlacementMode.PathsideOrGround;
         }
 
