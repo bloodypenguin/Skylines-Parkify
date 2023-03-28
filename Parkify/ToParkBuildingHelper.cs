@@ -37,19 +37,17 @@ public static class ToParkBuildingHelper
         "Sphinx Of Scenarios",
         "Disaster Memorial",
         "Frozen Fountain",
-        "Temple",
+        "PDX17_Five Story Pagora",//Temple
         "Pyramid of Safety",
         "The Statue Of Colossalus"
-        //I could not find the exact building names for these, so I'm not sure if they need underscores or another variation of the name. 
-        //"Ski Resort"
-        //"Snowcastle Restaurant"
-        //"Chirp's Thumbs Up Plaza"
-        //"Korean Style Temple"
-        //"Bronze Cow"
-        //"Bronze Panda"
-        //"Elevated Plaza"
-        //"Underground Garden Plaza"
-        
+        "Ski Resort Building",
+        "Snowcastle Restaurant",
+        "Chirps Thumbs Up Plaza",
+        "Korean Style Temple",
+        "Bronze Cow",
+        "Bronze Panda",
+        "Financial Plaza 01",//Underground Garden Plaza
+        "Financial Plaza 02",//Elevated Plaza
     };
 
 
