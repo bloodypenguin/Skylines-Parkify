@@ -41,6 +41,7 @@ namespace Parkify.HarmonyPatches.BuildingInfoPatch
         {
             try
             {
+                FixParkBuildingPlacementModeIfNeeded(__instance);
                 ToParkBuildingHelper.ParkifyIfNeeded(__instance);
                 if (__instance?.name == "Panda Sanctuary")
                 {
@@ -66,6 +67,18 @@ namespace Parkify.HarmonyPatches.BuildingInfoPatch
                 UnityEngine.Debug.LogError($"Parkify - failed to execute post initialize for {__instance?.name}");
                 UnityEngine.Debug.LogException(e);
             }
+        }
+
+        private static void FixParkBuildingPlacementModeIfNeeded(BuildingInfo prefabInfo)
+        {
+            if (prefabInfo.m_buildingAI is not ParkBuildingAI ||
+                prefabInfo.m_placementStyle == ItemClass.Placement.Procedural ||
+                prefabInfo.m_placementMode != BuildingInfo.PlacementMode.Roadside)
+            {
+                return;
+            }
+            UnityEngine.Debug.Log($"Parkify - updated placement mode for park building {prefabInfo?.name}");
+            prefabInfo.m_placementMode = BuildingInfo.PlacementMode.PathsideOrGround;
         }
 
         private static void PatchMonumentSurfaceAndProps(BuildingInfo buildingInfo, TerrainModify.Surface pavementReplacement)
