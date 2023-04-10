@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Parkify.OptionsFramework;
 
 namespace Parkify.HarmonyPatches.BuildingInfoPatch
 {
@@ -55,12 +56,16 @@ namespace Parkify.HarmonyPatches.BuildingInfoPatch
                     return;
                 }
 
-                if (__instance?.name != "Beachvolley Court" || __instance.m_props == null)
+                if (__instance.name == "Floating Cafe Sub" && OptionsWrapper<Options>.Options.PatchFloatingCafeBoats)
                 {
-                    return;
+                    PatchFloatingCafeBoats(__instance);
                 }
 
-                PatchBeachvolleyCourtSurfaceAndProps(__instance);
+                if (__instance?.name == "Beachvolley Court")
+                {
+                    PatchBeachvolleyCourtSurfaceAndProps(__instance);
+                }
+
             }
             catch (Exception e)
             {
@@ -68,6 +73,8 @@ namespace Parkify.HarmonyPatches.BuildingInfoPatch
                 UnityEngine.Debug.LogException(e);
             }
         }
+
+ 
 
         private static void FixParkBuildingPlacementModeIfNeeded(BuildingInfo prefabInfo)
         {
@@ -103,7 +110,12 @@ namespace Parkify.HarmonyPatches.BuildingInfoPatch
 
         private static void PatchBeachvolleyCourtSurfaceAndProps(BuildingInfo buildingInfo)
         {
-            buildingInfo.m_cellSurfaces = new TerrainModify.Surface[]
+            if (buildingInfo.m_props == null)
+            {
+                return;
+            }
+            
+            buildingInfo.m_cellSurfaces = new[]
             {
                 TerrainModify.Surface.None,
                 TerrainModify.Surface.None,
@@ -134,6 +146,29 @@ namespace Parkify.HarmonyPatches.BuildingInfoPatch
                 .ToArray();
             buildingInfo.m_hasParkingSpaces = VehicleInfo.VehicleType.None;
             buildingInfo.m_weakTerrainRuining = true;
+        }
+        
+        private static void PatchFloatingCafeBoats(BuildingInfo buildingInfo)
+        {
+            if (buildingInfo.m_props == null)
+            {
+                return;
+            }
+
+            foreach (var prop in buildingInfo.m_props)
+            {
+                if (prop?.m_prop == null)
+                {
+                    continue;
+                }
+
+                if (prop.m_prop.name.Contains("Motorboat"))
+                {
+                    prop.m_prop.m_color1 = prop.m_prop.m_color0;
+                    prop.m_prop.m_color2 = prop.m_prop.m_color0;
+                    prop.m_prop.m_color3 = prop.m_prop.m_color0;
+                }
+            }
         }
     }
 }

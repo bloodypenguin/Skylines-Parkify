@@ -13,6 +13,7 @@ namespace Parkify
             PatchFishingTours = true;
             PatchMarina = true;
             PatchBeachVolley = true;
+            PatchFloatingCafeBoats = true;
         }
 
         [XmlElement("patch")]
@@ -30,6 +31,10 @@ namespace Parkify
         [XmlElement("patchBeachvolley")]
         [Checkbox("Remove parking lots, concrete and annoying props from Beach Volleyball asset", "Vanilla assets fixes")]
         public bool PatchBeachVolley { set; get; }
+        
+        [XmlElement("patchFloatingCafeProps")]
+        [Checkbox("Remove color variation from Floating Cafe motorboats", "Vanilla assets fixes")]
+        public bool PatchFloatingCafeBoats { set; get; }
 
     }
 }
