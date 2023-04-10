@@ -114,6 +114,9 @@ namespace Parkify
             if (prefabInfo.m_placementMode == BuildingInfo.PlacementMode.Roadside)
             {
                 prefabInfo.m_placementMode = BuildingInfo.PlacementMode.PathsideOrGround;
+            } else if (prefabInfo.m_placementMode == BuildingInfo.PlacementMode.Shoreline)
+            {
+                prefabInfo.m_placementMode = BuildingInfo.PlacementMode.ShorelineOrGround;
             }
 
             newAI.m_parkType = parkType;
