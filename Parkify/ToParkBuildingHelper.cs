@@ -9,7 +9,6 @@ using Object = UnityEngine.Object;
 
 namespace Parkify
 {
-
     public static class ToParkBuildingHelper
     {
         private static List<string> monumentExcludeList = new List<string>
@@ -38,7 +37,18 @@ namespace Parkify
             "Sleigh Ride",
             "Sphinx Of Scenarios",
             "Disaster Memorial",
-            "Frozen Fountain"
+            "Frozen Fountain",
+            "PDX17_Five Story Pagora",//Temple
+            "Pyramid of Safety",
+            "The Statue Of Colossalus"
+            "Ski Resort Building",
+            "Snowcastle Restaurant",
+            "Chirps Thumbs Up Plaza",
+            "Korean Style Temple",
+            "Bronze Cow",
+            "Bronze Panda",
+            "Financial Plaza 01",//Underground Garden Plaza
+            "Financial Plaza 02",//Elevated Plaza
         };
 
 
